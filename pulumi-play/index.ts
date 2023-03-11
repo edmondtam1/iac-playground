@@ -1,29 +1,43 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-import * as awsx from "@pulumi/awsx";
+import * as awsnative from "@pulumi/aws-native";
 
-// Create an AWS resource (S3 Bucket)
-const bucket = new aws.s3.Bucket("my-bucket");
+const lambdaRole = new awsnative.iam.Role("lambdaRole", {
+  assumeRolePolicyDocument: {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Action: "sts:AssumeRole",
+        Principal: {
+          Service: "lambda.amazonaws.com",
+        },
+        Effect: "Allow",
+        Sid: "",
+      },
+    ],
+  },
+});
 
-// Export the name of the bucket
-export const bucketName = bucket.id;
+const lambdaRoleAttachment = new aws.iam.RolePolicyAttachment(
+  "lambdaRoleAttachment",
+  {
+    role: pulumi.interpolate`${lambdaRole.roleName}`,
+    policyArn: aws.iam.ManagedPolicy.AWSLambdaBasicExecutionRole,
+  }
+);
 
-/*
+const helloFunction = new awsnative.lambda.Function("helloFunction", {
+  role: lambdaRole.arn,
+  runtime: "nodejs14.x",
+  handler: "index.handler",
+  code: {
+    zipFile: `exports.handler = function(event, context, callback){ callback(null, {"response": "Hello "}); };`,
+  },
+});
 
+const lambdaUrl = new awsnative.lambda.Url("test", {
+  targetFunctionArn: helloFunction.arn,
+  authType: awsnative.lambda.UrlAuthType.None,
+});
 
-ca () {
-  if [[ $# == '0' ]]; then
-    command git add -A && git commit -m "Quick commit"
-  elif [[ $# == '1' ]]; then
-    command git add -A && git commit -m "$1"
-  else
-    command git add -A && git commit -m "$1" -m "$2"
-  fi
-}
-
-cap () {
-  ca "$@" && git push
-}
-
-
-*/
+export const url = lambdaUrl.functionUrl;

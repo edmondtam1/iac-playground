@@ -15,10 +15,10 @@ Serverless Framework
 
 Complete first using Pulumi, then CDK:
 
-- Deploy "hello world" Lambda function
-- Lambda function read/writes to S3
-- Deploy function in our VPC
-- Lambda function read/writes to Postgres RDS DB
+- [x] Deploy "hello world" Lambda function
+- [ ] Lambda function read/writes to S3
+- [ ] Deploy function in our VPC
+- [ ] Lambda function read/writes to Postgres RDS DB
 
 Stretch goal, deploy using SST.
 
@@ -26,3 +26,4 @@ Stretch goal, deploy using SST.
 
 https://www.pulumi.com/docs/get-started/aws/begin/
 https://www.pulumi.com/docs/get-started/aws/create-project/
+https://www.pulumi.com/blog/lambda-urls-launch/
