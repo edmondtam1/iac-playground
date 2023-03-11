@@ -21,3 +21,8 @@ Complete first using Pulumi, then CDK:
 - Lambda function read/writes to Postgres RDS DB
 
 Stretch goal, deploy using SST.
+
+# Resources:
+
+https://www.pulumi.com/docs/get-started/aws/begin/
+https://www.pulumi.com/docs/get-started/aws/create-project/
