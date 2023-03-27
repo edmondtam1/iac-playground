@@ -1,6 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import * as awsnative from "@pulumi/aws-native";
+import * as fs from "fs";
 
 const lambdaRole = new awsnative.iam.Role("lambdaRole", {
   assumeRolePolicyDocument: {
@@ -26,12 +27,14 @@ const lambdaRoleAttachment = new aws.iam.RolePolicyAttachment(
   }
 );
 
+// Run `npx tsc` before deploying the code
+
 const helloFunction = new awsnative.lambda.Function("helloFunction", {
   role: lambdaRole.arn,
   runtime: "nodejs14.x",
   handler: "index.handler",
   code: {
-    zipFile: `exports.handler = function(event, context, callback){ callback(null, {"response": "Hello "}); };`,
+    zipFile: fs.readFileSync("./bin/lambda.js").toString(),
   },
 });
 

@@ -24,6 +24,6 @@ Stretch goal, deploy using SST.
 
 # Resources:
 
-https://www.pulumi.com/docs/get-started/aws/begin/
-https://www.pulumi.com/docs/get-started/aws/create-project/
-https://www.pulumi.com/blog/lambda-urls-launch/
+- https://www.pulumi.com/docs/get-started/aws/begin/
+- https://www.pulumi.com/docs/get-started/aws/create-project/
+- https://www.pulumi.com/blog/lambda-urls-launch/
